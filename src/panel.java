@@ -35,6 +35,7 @@ public class panel extends JPanel{
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if(newGame.endGame==false) {
+				
 				int mX = e.getX();
 				int mY = e.getY();
 				
@@ -51,7 +52,13 @@ public class panel extends JPanel{
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+			if(newGame.endGame == false) {
+				int mX = e.getX();
+				int mY = e.getY();
+				if(e.getButton()==1) {
+					newGame.mouseReleased(mX, mY);
+				}
+			}
 		}
 		
 	}
