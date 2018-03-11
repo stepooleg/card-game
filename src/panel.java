@@ -140,6 +140,8 @@ public class panel extends JPanel{
 			
 		});
 		
+		tmDraw.start();
+		
 	}
 
 	public void paintComponent(Graphics gr) {

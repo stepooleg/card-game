@@ -81,9 +81,9 @@ public class game {
 			else {
 				num = pack[0].size()-1;
 			}
-			System.out.println("test");
 			card getCard = pack[0].get(num);
 			getCard.backOfACard = false;
+			System.out.println(getCard.backOfACard);
 			getCard.x +=110;
 			pack[1].add(getCard);
 			pack[0].remove(num);
