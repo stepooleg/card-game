@@ -2,6 +2,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.util.Iterator;
+
 import javax.imageio.*;
 
 public class game {
@@ -83,7 +85,6 @@ public class game {
 			}
 			card getCard = pack[0].get(num);
 			getCard.backOfACard = false;
-			System.out.println(getCard.backOfACard);
 			getCard.x +=110;
 			pack[1].add(getCard);
 			pack[0].remove(num);
@@ -107,6 +108,7 @@ public class game {
 		}
 		
 		load();
+		toDealCards();
 		endGame = false;
 		primStep=true;
 	}
@@ -118,10 +120,11 @@ public class game {
 	}
 	
 	public void drawDeck(Graphics gr) {
+		//redrawing the deck ¹1
 		if(pack[0].size()>0) {
 			pack[0].get(pack[0].size()-1).draw(gr);
 		}
-		
+		//redrawing the deck ¹2
 		if(pack[1].size()>1)
 		{
 			pack[1].get(pack[1].size()-2).draw(gr);
@@ -129,6 +132,46 @@ public class game {
 		}
 		else if(pack[1].size()==1) {
 			pack[1].get(pack[1].size()-1).draw(gr);
+		}
+		// four home tutus
+		
+		for (int i = 2; i <=5; i++) {
+			if (pack[i].size()>1) {
+				pack[i].get(pack[i].size()-2).draw(gr);
+				pack[i].get(pack[i].size()-1).draw(gr);
+			}
+			else if (pack[i].size()==1) {
+				pack[i].get(pack[i].size()-1).draw(gr);
+			}
+		}
+		
+		//bottom seven tutus
+		for (int i = 6; i <pack.length; i++) {
+			if (pack[i].size()>0) {
+				for (int j = 0; j < pack[i].size(); j++) {
+					pack[i].get(j).draw(gr);
+				}
+			}
+			
+		}
+		
+	}
+	
+	private void toDealCards() {
+		int x = 30;
+		for (int i = 6; i < pack.length; i++) {
+			for (int j = 6; j <=i; j++) {
+				int rnd = (int)(Math.random()*pack[0].size());
+				card getCard = pack[0].get(rnd);
+				if(j<i) getCard.backOfACard = true;
+				else getCard.backOfACard = false;
+				getCard.x = x;
+				getCard.y = 130+pack[i].size()*20;
+				pack[i].add(getCard);
+				pack[0].remove(rnd);
+				
+			}
+			x+=110;
 		}
 	}
 
