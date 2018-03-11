@@ -12,6 +12,12 @@ public class game {
 	private pack[] pack;
 	private boolean primStep;
 	public boolean endGame;
+	private int numPack;
+	private int numCard;
+	private int dx, dy;
+	private int oldX, oldY;
+	private Timer tmEndGame;
+	
 	
 	public game(){
 		try {
@@ -26,13 +32,43 @@ public class game {
 		for (int i = 0; i < pack.length; i++) {
 			pack[i] = new pack();
 		}
+		tmEndGame = new Timer(100,new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				for(int i=2;i<=5;i++) {
+					card getCard = pack[i].get(0);
+					pack[i].add(getCard);
+					pack[i].remove(0);
+				}
+			}
+			
+		});
 		
 		start();
 		
 	}
 	
 	public void mouseDragget(int mX, int mY) {
-		
+		if(numPack>=0) {
+			card getCard = pack[numPack].get(numCard);
+			getCard.x = mX-dx;
+			getCard.y = mY-dy;
+			
+			if(getCard.x<0) getCard.x =0;
+			if(getCard.x>720) getCard.x =720;
+			if(getCard.y<0) getCard.y =0;
+			if(getCard.y<650) getCard.y =650;
+			
+			int y = 20;
+			for (int i = numCard+1; i < pack[numPack].size(); i++) {
+				pack[numPack].get(i).x = getCard.x;
+				pack[numPack].get(i).y = getCard.y+y;
+				y+=20;
+			}
+			
+		}
 	}
 	
 	public void mousePressed(int mX, int mY) {
@@ -111,6 +147,8 @@ public class game {
 		toDealCards();
 		endGame = false;
 		primStep=true;
+		numCard = -1;
+		numPack =-1;
 	}
 	
 	private void load() {
@@ -149,11 +187,19 @@ public class game {
 		for (int i = 6; i <pack.length; i++) {
 			if (pack[i].size()>0) {
 				for (int j = 0; j < pack[i].size(); j++) {
+					if(pack[i].get(j).mouseMov == true) break;
 					pack[i].get(j).draw(gr);
 				}
 			}
 			
 		}
+		//mouse Move card
+		if(numPack!=-1) {
+			for(int i=numCard;i<pack[numPack].size();i++) {
+				pack[numPack].get(i).draw(gr);
+			}
+		}
+		
 		
 	}
 	
@@ -172,6 +218,23 @@ public class game {
 				
 			}
 			x+=110;
+		}
+	}
+	
+	private void testEndGame() {
+		if((pack[2].size()==13)&&(pack[3].size()==13)&(pack[4].size()==13)&&(pack[5].size()==13)){
+			endGame = true;
+			tmEndGame.start();
+		}
+	}
+	
+	private void openCard() {
+		for(int i=6;i<=12;i++) {
+			if(pack[i].size()>0) {
+				int numLast = pack[i].size()-1;
+				card getCard = pack[i].get(numLast);
+				if(getCard.backOfACard==true) getCard.backOfACard = false;
+			}
 		}
 	}
 
