@@ -237,5 +237,49 @@ public class game {
 			}
 		}
 	}
+	private void setEntered(int num, int mX, int mY) {
+		if((num>=1) && (num<=5)) {
+			if(pack[num].size()>0) {
+				int numLast = pack[num].size()-1;
+				card getCard = pack[num].get(numLast);
+				getCard.mouseMov = true;
+				numCard = numLast;
+				numPack = num;
+				dx = mX- getCard.x;
+				dy = mY- getCard.y;
+				oldX = getCard.x;
+				oldY = getCard.y;
+			}
+		}
+		else if((num>=6)&&(num<=12)) {
+			if(pack[num].size()>0) {
+				int numLast = pack[num].size()-1;
+				card getCard = pack[num].get(numLast);
+				int numEntered = -1;
+				if((mY>=getCard.y)&&(mY<=(getCard.y+97))) {
+					numEntered = numLast;
+				}
+				else if (mY<getCard.y) {
+					numEntered = (mY-130)/20;
+					if(pack[num].get(numEntered).backOfACard==true) {
+						numEntered=-1;
+					}
+				}
+				if(numEntered!=-1) {
+					card getCardEntered = pack[num].get(numEntered);
+					if(getCardEntered.backOfACard==false) {
+						getCardEntered.mouseMov=true;
+						numCard = numEntered;
+						numPack = num;
+						dx = mX-getCardEntered.x;
+						dy = mY-getCardEntered.y;
+						oldX = getCardEntered.y;
+						oldY = getCardEntered.y;
+					}
+				}
+				
+			}
+		}
+	}
 
 }
