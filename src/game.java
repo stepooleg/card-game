@@ -55,11 +55,11 @@ public class game {
 			card getCard = pack[numPack].get(numCard);
 			getCard.x = mX-dx;
 			getCard.y = mY-dy;
-			
+
 			if(getCard.x<0) getCard.x =0;
 			if(getCard.x>720) getCard.x =720;
 			if(getCard.y<0) getCard.y =0;
-			if(getCard.y<650) getCard.y =650;
+			if(getCard.y>650) getCard.y =650;
 			
 			int y = 20;
 			for (int i = numCard+1; i < pack[numPack].size(); i++) {
@@ -72,19 +72,75 @@ public class game {
 	}
 	
 	public void mousePressed(int mX, int mY) {
-		
+		int num = getNumPackPress(mX, mY);
+		setEntered(num, mX, mY);
 	}
 	
 	public void mouseDoublePressed(int mX, int mY) {
-		
+		int num = getNumPackPress(mX,mY);
+		if((num==1)||(num>=6)&&(num<=12));
+		{
+			if(pack[num].size()>0){
+				int numLast = pack[num].size()-1;
+				card getCard = pack[num].get(numLast);
+				if((mY>=getCard.y)&&(mY<=(getCard.y+97))){
+					for(int i=2; i<=5; i++){
+						int rez = -1;
+						if(pack[i].size()==0){
+							if(getCard.typeCard==12){
+								rez=i;
+							}
+						}
+						else{
+							int numLast2 = pack[i].size()-1;
+							card getCard2 = pack[i].get(numLast2);
+							if((getCard2.typeCard==12)&&(getCard.suit==getCard2.suit)&&(getCard.typeCard==0)){
+								rez=i;
+							}
+							else if((getCard2.typeCard>=0)&&(getCard.suit==getCard2.suit)&&(getCard.typeCard<11)){
+								if(getCard2.typeCard+1==getCard.typeCard){
+									rez=i;
+								}
+							}
+						}
+						if(rez>=0){
+							getCard.x=(110*(rez+1))+30;
+							getCard.y = 15;
+							pack[rez].add(getCard);
+							pack[num].remove((numLast));
+							testEndGame();
+							break;
+						}
+					}
+				}
+			}
+		}
+		openCard();
 	}
 	
 	public void mouseReleased(int mX, int mY) {
 		int num = getNumPackPress(mX, mY);
 		
-		if(num == 0) {
-			toDealTheCards();
+		if(numPack!=-1) {
+			pack[numPack].get(numCard).mouseMov = false;
+			if((num==-1)||(testMove(numPack,num)==false)){
+			    int y = 0;
+                for (int i =numCard; i <pack[numPack].size() ; i++) {
+                    card getCard = pack[numPack].get(i);
+                    getCard.x = oldX;
+                    getCard.y = oldY+y;
+                    y+=20;
+                }
+            }
+            numPack = -1;
+			numCard = -1;
+			openCard();
 		}
+		else{
+		    if(num==0){
+		        toDealTheCards();
+            }
+        }
 	}
 	
 	private int getNumPackPress(int mX, int mY) {
@@ -158,11 +214,11 @@ public class game {
 	}
 	
 	public void drawDeck(Graphics gr) {
-		//redrawing the deck ¹1
+		//redrawing the deck ï¿½1
 		if(pack[0].size()>0) {
 			pack[0].get(pack[0].size()-1).draw(gr);
 		}
-		//redrawing the deck ¹2
+		//redrawing the deck ï¿½2
 		if(pack[1].size()>1)
 		{
 			pack[1].get(pack[1].size()-2).draw(gr);
@@ -173,7 +229,7 @@ public class game {
 		}
 		// four home tutus
 		
-		for (int i = 2; i <=5; i++) {
+		for (int i = 2; i<=5; i++) {
 			if (pack[i].size()>1) {
 				pack[i].get(pack[i].size()-2).draw(gr);
 				pack[i].get(pack[i].size()-1).draw(gr);
@@ -222,7 +278,7 @@ public class game {
 	}
 	
 	private void testEndGame() {
-		if((pack[2].size()==13)&&(pack[3].size()==13)&(pack[4].size()==13)&&(pack[5].size()==13)){
+		if((pack[2].size()==12)&&(pack[3].size()==12)&(pack[4].size()==12)&&(pack[5].size()==12)){
 			endGame = true;
 			tmEndGame.start();
 		}
@@ -247,6 +303,7 @@ public class game {
 				numPack = num;
 				dx = mX- getCard.x;
 				dy = mY- getCard.y;
+				
 				oldX = getCard.x;
 				oldY = getCard.y;
 			}
@@ -273,13 +330,80 @@ public class game {
 						numPack = num;
 						dx = mX-getCardEntered.x;
 						dy = mY-getCardEntered.y;
-						oldX = getCardEntered.y;
+						oldX = getCardEntered.x;
 						oldY = getCardEntered.y;
+
 					}
 				}
 				
 			}
 		}
 	}
+	private boolean testMove(int num1, int num2){
+	    boolean rez = false;
+	    card getCard1 = pack[num1].get(numCard);
+        card getCard2 = null;
+
+        if(pack[num2].size()>0){
+            getCard2 = pack[num2].get(pack[num2].size()-1);
+        }
+        if((num2>=2)&&(num2<=5)){
+            if(numCard==(pack[num1].size()-1)){
+                if(getCard2==null){
+                    if(getCard1.typeCard==12) rez = true;
+
+                }
+                else if ((getCard2.typeCard==12)&&(getCard1.suit==getCard2.suit)&&(getCard1.typeCard==0)){
+                    rez = true;
+                }
+                else if ((getCard2.typeCard>=0)&&(getCard1.suit==getCard2.suit)&&(getCard2.typeCard<11)){
+                    if(getCard2.typeCard+1 == getCard1.typeCard){
+                        rez = true;
+                    }
+                }
+                if(rez==true){
+                    getCard1.x = (110*(num2+1)+30);
+                    getCard1.y = 15;
+                    pack[num2].add(getCard1);
+                    pack[num1].remove(numCard);
+                    testEndGame();
+                }
+            }
+        }
+        if((num2>=6)&&(num2<=12)){
+            int x = 30+(num2-6)*110;
+            int y = 130;
+            if(getCard2 == null){
+                if(getCard1.typeCard==11) rez = true;
+            }
+            else {
+                if(getCard2.backOfACard==false){
+                    if(getCard2.typeCard!=12){
+                        if((getCard2.typeCard==getCard1.typeCard+1)||((getCard2.typeCard==0)&&(getCard1.typeCard==12))){
+                            if(getCard2.colorSuit!=getCard1.colorSuit){
+                                y = getCard2.y+20;
+                                rez = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(rez==true){
+                for(int i=numCard; i<pack[num1].size();i++){
+                    card getCard_ = pack[num1].get(i);
+                    getCard_.x = x;
+                    getCard_.y = y;
+                    pack[num2].add(getCard_);
+                    y+=20;
+                }
+                for(int i=pack[num1].size()-1;i>=numCard;i--){
+                    pack[num1].remove(i);
+                }
+            }
+        }
+        return rez;
+
+    }
 
 }

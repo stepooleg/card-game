@@ -8,7 +8,7 @@ public class wind extends JFrame{
 		Container cont = getContentPane();
 		cont.add(pan);
 		
-		setTitle("Игра\"Пасьянс - Косынка\"");
+		setTitle("GAME\"Solitaire - Klondike\"");
 		setBounds(0,0,1000,700);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

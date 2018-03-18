@@ -5,12 +5,12 @@ import java.io.*;
 public class card {
 	public int x,y;
 	public Image img;
-	public boolean backOfACard; //признак обложки
-	public Image backOfACardImage; //картинка обложки
-	public int suit; //масть
-	public int typeCard; //ценность карты
-	public boolean mouseMov; //признак захвата мышью
-	public boolean colorSuit; //цвет масти
+	public boolean backOfACard; //РїСЂРёР·РЅР°Рє СЂСѓР±Р°С€РєРё РєР°СЂС‚С‹
+	public Image backOfACardImage; //РёР·РѕР±СЂР°Р¶РµРЅРёРµ СЂСѓР±Р°С€РєРё РєР°СЂС‚С‹
+	public int suit; //РјР°СЃС‚СЊ
+	public int typeCard; //С‚РёРї РєР°СЂС‚С‹
+	public boolean mouseMov; //РїСЂРёР·РЅР°Рє Р·Р°С…РІР°С‚Р° РјС‹С€СЊСЋ
+	public boolean colorSuit; //С†РІРµС‚ РјР°СЃС‚Рё
 	
 	public card(String path, Image backOfACardImage, int nominal){
 		mouseMov=false;
@@ -35,6 +35,7 @@ public class card {
 	public void draw(Graphics gr) {
 		if(backOfACard==false) {
 			gr.drawImage(img, x, y, 72, 97, null);
+
 		}
 		else {
 			gr.drawImage(backOfACardImage, x, y, 72, 97, null);

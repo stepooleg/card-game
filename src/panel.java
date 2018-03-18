@@ -99,7 +99,7 @@ public class panel extends JPanel{
 		
 		setLayout(null);
 		btnNG = new JButton();
-		btnNG.setText("Новая игра");
+		btnNG.setText("New Game");
 		btnNG.setForeground(Color.BLUE);
 		btnNG.setFont(new Font("serif",0,20));
 		btnNG.setBounds(820,50,150,50);
@@ -115,7 +115,7 @@ public class panel extends JPanel{
 		add(btnNG);
 		
 		btnEx = new JButton();
-		btnEx.setText("Выход");
+		btnEx.setText("EXIT");
 		btnEx.setForeground(Color.RED);
 		btnEx.setFont(new Font("serif",0,20));
 		btnEx.setBounds(820,150,150,50);
